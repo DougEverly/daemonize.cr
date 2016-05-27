@@ -1,6 +1,6 @@
-# daemonize
+# Daemonize
 
-Daemonize daemonizes a Crsytal process so that it properly runs in the background without needing a terminal session.
+Daemonize daemonizes a Crystal process so that it properly runs in the background without needing an active terminal session. This is what many server processes do.
 
 This is a shard of pending pull request https://github.com/crystal-lang/crystal/pull/2375.
 
