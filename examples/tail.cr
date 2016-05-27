@@ -7,14 +7,20 @@ stdin = Tempfile.new("in")
 puts <<-THE_END
 Reading from #{stdin.path}
 Writing to #{stdout.path}
+
 To kill daemon: 'echo "exit" >> #{stdin.path}'
+
+  or
+
+Type `kill -9 #{Process.pid}` to kill the daemon.
+
 THE_END
 
-Process.daemonize(stdin: stdin.path, stdout: stdout.path)
+Daemonize.daemonize(stdin: stdin.path, stdout: stdout.path)
 
 def process(msg)
   if msg
-    puts "read line '#{msg.chop}'"
+    puts "The daemon got line '#{msg.chop}'"
     if msg.chop == "exit"
       puts "bye"
       exit

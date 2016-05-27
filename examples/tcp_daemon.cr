@@ -3,16 +3,23 @@ require "socket"
 
 # goes with tcp_client.cr
 
-Process.daemonize
+HOST = "127.0.0.1"
+PORT = 9000
+
+puts "Telnet to #{HOST} port #{PORT} and type exit to kill daemon."
+
+Daemonize.daemonize
 
 def process(client)
   client_addr = client.remote_address
   puts "#{client_addr} connected"
 
   while msg = client.read_line.chop
-    Process.exit if msg == "exit"
-    puts "#{client_addr} msg '#{msg}'\n"
-    client.puts msg
+    if msg == "exit"
+      client.puts "The daemon is exiting"
+      Process.exit
+    end
+    client.puts "The daemon got \"#{msg}\""
   end
 rescue IO::EOFError
   puts "#{client_addr} dissconnected"
@@ -20,6 +27,6 @@ ensure
   client.close
 end
 
-server = TCPServer.new "127.0.0.1", 9000
-puts "listen on 127.0.0.1:9000"
+server = TCPServer.new HOST, PORT
+puts "listen on #{HOST}:#{PORT}"
 loop { spawn process(server.accept) }

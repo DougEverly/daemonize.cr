@@ -1,5 +1,6 @@
 require "logger"
 require "tempfile"
+require "../src/daemonize"
 puts "Daemonizing..."
 
 stdout = Tempfile.new("out")
@@ -10,9 +11,13 @@ puts <<-THE_END
 STDOUT is #{stdout.path}
 STDERR is #{stderr.path}
 STDIN  is #{stdin.path}
+
+Type `kill -9 #{Process.pid}` to kill the daemon.
+
 THE_END
 
-Process.daemonize(stdout: stdout.path, stderr: stderr.path, stdin: stdin.path)
+
+Daemonize.daemonize(stdout: stdout.path, stderr: stderr.path, stdin: stdin.path)
 
 begin
   log = Logger.new(STDERR)

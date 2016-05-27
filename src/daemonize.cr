@@ -5,7 +5,7 @@ lib LibC
   fun getsid(pid : PidT) : PidT
 end
 
-class Process
+class Daemonize
   def self.setsid
     LibC.setsid
   end
