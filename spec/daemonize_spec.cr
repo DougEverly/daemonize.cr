@@ -1,8 +1,9 @@
 require "spec"
 require "process"
 require "tempfile"
+require "./spec_helper"
 
-describe Daemonize do
+describe "Daemonize" do
   it "daemonizes and has parent pid == 1" do
     # run = ->(command : String) {
     #   Process.run(
@@ -12,7 +13,7 @@ describe Daemonize do
 
     tmp = Tempfile.new("it_daemonizes")
     fork {
-      Process.daemonize
+      Daemonize.daemonize
       sleep 1
       File.write(tmp.path, Process.ppid.to_s)
     }
